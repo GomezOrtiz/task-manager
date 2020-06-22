@@ -1,0 +1,8 @@
+db:
+  host: 'postgres'
+  username: 'taskmanager'
+  password: 't4skm4n4g3r'
+  synchronize: true
+
+jwt:
+  secret: 'someReallySafeSecret'

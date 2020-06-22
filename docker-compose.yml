@@ -1,0 +1,51 @@
+version: '3.0'
+
+services:
+  app:
+    container_name: task-manager
+    build: .
+    command: bash -c "npm run build && npm run start"
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=docker
+    networks:
+      - backend
+    depends_on:
+      - postgres
+    volumes:
+      - .:/code:delegated
+      - node_modules:/code/node_modules:delegated
+    restart: on-failure:5
+
+  postgres:
+    container_name: task-manager-postgres
+    image: postgres:12.2-alpine
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend
+      - admin
+    environment:
+      - POSTGRES_DB=taskmanager
+      - POSTGRES_USER=taskmanager
+      - POSTGRES_PASSWORD=t4skm4n4g3r
+    restart: unless-stopped
+
+  adminer:
+    container_name: task-manager-adminer
+    image: adminer:4.7.6
+    ports:
+      - 9090:8080
+    networks:
+      - admin
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  backend:
+  admin:
+volumes:
+  node_modules:
+  postgres-data:

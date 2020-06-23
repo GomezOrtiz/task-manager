@@ -3,8 +3,7 @@ version: '3.0'
 services:
   app:
     container_name: task-manager
-    build: .
-    command: bash -c "npm run build && npm run start"
+    image: node:12.18.1-slim
     ports:
       - 3000:3000
     environment:
@@ -16,6 +15,8 @@ services:
     volumes:
       - .:/code:delegated
       - node_modules:/code/node_modules:delegated
+    working_dir: /code
+    command: bash -c "npm install && npm run build && npm run start:dev"
     restart: on-failure:5
 
   postgres:

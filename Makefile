@@ -1,3 +1,9 @@
+start:
+		@npm run start:dev NODE_ENV=development
+
+build:
+		@docker build -t task-manager .
+
 up:
 		@docker-compose up -d
 
@@ -14,9 +20,9 @@ cleanup:
 		@docker rmi $$(docker images -f "dangling=true" -q)
 
 test:
-		npm run test
+		@npm test
 
 ping-db:
 		@docker exec task-manager-postgres pg_isready --dbname=taskmanager --host=localhost --port=5432 --username=taskmanager
 
-.PHONY: up logs down status cleanup test ping-db
+.PHONY: start build up logs down status cleanup test ping-db

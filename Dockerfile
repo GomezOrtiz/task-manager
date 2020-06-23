@@ -1,6 +1,9 @@
-FROM node:12.16.3-slim
+FROM node:12.18.1-alpine
 
 WORKDIR /code
 
-COPY package.json package-lock.json ./
-RUN npm install
+COPY . .
+RUN npm install && npm run build
+
+EXPOSE 3000
+CMD ["npm", "run", "start:prod"]
